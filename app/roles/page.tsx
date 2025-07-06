@@ -1,6 +1,6 @@
 import { getRolesWithPermissions } from '@/lib/data';
 import RolesTable from '@/components/RolesTable';
-import Link from 'next/link';
+import PageHeader from '@/components/PageHeader';
 
 export default async function RolesPage() {
   try {
@@ -8,26 +8,15 @@ export default async function RolesPage() {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Roles</h1>
-            <p className="text-gray-600 mt-2">Manage system roles and their permissions</p>
-          </div>
-          <nav className="flex space-x-4">
-            <Link
-              href="/users"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            >
-              View Users
-            </Link>
-            <Link
-              href="/permissions"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            >
-              View Permissions
-            </Link>
-          </nav>
-        </div>
+        <PageHeader
+          title="Roles"
+          description="Manage system roles and their permissions"
+          buttons={[
+            { href: '/roles/new', label: 'Add New Role', color: 'primary', variant: 'solid' },
+            { href: '/users', label: 'View Users', color: 'default', variant: 'bordered' },
+            { href: '/permissions', label: 'View Permissions', color: 'default', variant: 'bordered' }
+          ]}
+        />
 
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">

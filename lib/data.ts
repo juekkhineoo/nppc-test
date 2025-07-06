@@ -110,7 +110,9 @@ export async function getRolesWithPermissions(): Promise<
 export async function getUserById(id: number): Promise<UserWithRole | null> {
   try {
     const pool = await connectToDatabase();
-    const result = await pool.request().input("id", sql.Int, id).query(`
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query(`
         SELECT 
           u.id,
           u.loginId,
@@ -136,20 +138,69 @@ export async function getUserById(id: number): Promise<UserWithRole | null> {
   }
 }
 
-export async function getRoleById(id: number): Promise<Role | null> {
+export async function getRoleById(id: number): Promise<RoleWithPermissions | null> {
   try {
     const pool = await connectToDatabase();
-    const result = await pool.request().input("id", sql.Int, id).query(`
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query(`
+        SELECT 
+          r.id,
+          r.name,
+          p.id as permissionId,
+          p.name as permissionName
+        FROM Roles r
+        LEFT JOIN RolePermission rp ON r.id = rp.roleId
+        LEFT JOIN Permissions p ON rp.permissionId = p.id
+        WHERE r.id = @id
+      `);
+
+    if (result.recordset.length === 0) {
+      return null;
+    }
+
+    const firstRow = result.recordset[0];
+    const role: RoleWithPermissions = {
+      id: firstRow.id,
+      name: firstRow.name,
+      permissions: []
+    };
+
+    // Group permissions
+    const permissionMap = new Map<number, Permission>();
+    for (const row of result.recordset) {
+      if (row.permissionId) {
+        permissionMap.set(row.permissionId, {
+          id: row.permissionId,
+          name: row.permissionName
+        });
+      }
+    }
+
+    role.permissions = Array.from(permissionMap.values());
+    return role;
+  } catch (error) {
+    console.error("Error fetching role by ID:", error);
+    throw error;
+  }
+}
+
+export async function getPermissionById(id: number): Promise<Permission | null> {
+  try {
+    const pool = await connectToDatabase();
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query(`
         SELECT 
           id,
           name
-        FROM Roles
+        FROM Permissions
         WHERE id = @id
       `);
 
     return result.recordset[0] || null;
   } catch (error) {
-    console.error("Error fetching role by ID:", error);
+    console.error("Error fetching permission by ID:", error);
     throw error;
   }
 }

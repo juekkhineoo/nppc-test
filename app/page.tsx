@@ -6,7 +6,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            User Management System
+            NPPC Management System
           </h1>
           <p className="text-xl text-gray-600 mb-12">
             A Next.js 15+ application with TypeScript, App Router, and Microsoft SQL Server integration
