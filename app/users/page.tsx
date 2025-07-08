@@ -1,5 +1,5 @@
 import { getAllUsers } from '@/lib/data';
-import UsersTable from '@/components/UsersTable';
+import UsersTable from './table';
 import PageHeader from '@/components/PageHeader';
 
 export default async function UsersPage() {

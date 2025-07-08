@@ -1,5 +1,5 @@
 import { getRolesWithPermissions } from '@/lib/data';
-import RolesTable from '@/components/RolesTable';
+import RolesTable from './table';
 import PageHeader from '@/components/PageHeader';
 
 export default async function RolesPage() {

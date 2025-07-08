@@ -1,5 +1,5 @@
 import { getAllPermissions } from '@/lib/data';
-import PermissionsTable from '@/components/PermissionsTable';
+import PermissionsTable from './table';
 import PageHeader from '@/components/PageHeader';
 
 export default async function PermissionsPage() {
